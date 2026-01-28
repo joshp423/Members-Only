@@ -1,0 +1,12 @@
+<nav>
+  <h1>Members Only</h1>
+  <ul>
+    <% for (let i = 0; i < links.length; i++) { %>
+      <li>
+        <a href="<%= links[i].href %>">
+          <span> <%= links[i].text %> </span>
+        </a>
+      </li>
+    <% } %>
+  </ul>
+</nav>
