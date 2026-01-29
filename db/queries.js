@@ -24,9 +24,31 @@ async function addNewUser(username, password) {
         [username, password]
     )
     return;
-}   
+}
+
+async function userLookupUsername(username) {
+    const { rows } = await pool.query(
+        `SELECT * FROM users
+        WHERE username = $1;`,
+        [username]
+    )
+    return rows[0];
+}
+
+async function userLookupId(userid) {
+    const { rows } = await pool.query(
+        `SELECT * FROM users
+        WHERE id = $1;`,
+        [userid]
+    )
+    return rows[0];
+}
+
+
 module.exports = {
     getAllMessages,
     getMessageSenderNames,
-    addNewUser
+    addNewUser,
+    userLookupUsername,
+    userLookupId
 }

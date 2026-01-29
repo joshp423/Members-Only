@@ -1,6 +1,8 @@
 require('dotenv').config();
 const { localsName } = require('ejs');
 const db = require("../db/queries");
+const passport = require("passport");
+const LocalStrategy = require('passport-local').Strategy;
 
 async function allMessagesGet (req, res) {
     const messages = await db.getAllMessages();
@@ -72,34 +74,60 @@ const signUpFormPost = [
   }
 ]
 
-const logInPost = [
-  ...validateLogIn
-  (req, res) {
-  passport.use(
-    new LocalStrategy(async (username, password, done) => {
-      try {
-        const { rows } = await pool.query("SELECT * FROM users WHERE username = $1", [username]);
-        const user = rows[0];
-  
+passport.use(
+  new LocalStrategy(async (username, password, done) => {
+    try {
+      const user = await db.userLookupUsername(username);    
         if (!user) {
           return done(null, false, { message: "Incorrect username" });
         }
         const match = await bcrypt.compare(password, user.password);
         if (!match) {
-          // passwords do not match!
+        // passwords do not match!
           return done(null, false, { message: "Incorrect password" })
         }
         return done(null, user);
-      } catch(err) {
-        return done(err);
-      }
-    })
-  );
+    } catch(err) {
+      return done(err);
+    }
+  })
+);
+
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
+
+passport.deserializeUser(async (id, done) => {
+  try {
+    const user = db.userLookupId(id);
+
+    done(null, user);
+  } catch(err) {
+    done(err);
+  }
+});
+
+async function logInPost (req, res) {
+  passport.authenticate("local", {
+      successRedirect: "/",
+      failureRedirect: "/authenticate"
+  })
+}
+
+async function logOutGet (req, res, next) {
+  req.logout((err) => {
+    if (err) {
+      return next(err);
+    }
+    res.redirect("/");
+  });
 }
 
 module.exports = {
     allMessagesGet,
     authenticateGet,
     signUpFormGet,
-    signUpFormPost
+    signUpFormPost,
+    logInPost,
+    logOutGet
 }
