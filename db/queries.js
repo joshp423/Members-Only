@@ -1,1 +1,32 @@
 const pool = require("./pool");
+
+async function getAllMessages() {
+    const { rows } = pool.query(
+        'SELECT * FROM messages'
+    )
+    return rows;
+}
+
+async function getMessageSenderNames() {
+    const { rows } = await pool.query(
+        `SELECT users.firstname, users.lastname
+            FROM messages
+            JOIN users
+            ON users.id = messages.userid;`,
+    )
+    return rows;
+}
+
+async function addNewUser(username, password) {
+    await pool.query(
+        `INSERT INTO users (username, password)
+        VALUES ($1, $2);`,
+        [username, password]
+    )
+    return;
+}   
+module.exports = {
+    getAllMessages,
+    getMessageSenderNames,
+    addNewUser
+}

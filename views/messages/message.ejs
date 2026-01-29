@@ -1,0 +1,9 @@
+<div class="messageTile">
+    <h1> <%= message.text %> </h1>
+    <% if (locals.user) {%>
+        <h3><%= message.firstname %> <%= message.lastname %></h3>
+    <% } else { %>
+        <h3>Anonymous User</h3>
+    <% }); %>
+    <p> Sent at: <%= message.added %></p>
+</div>

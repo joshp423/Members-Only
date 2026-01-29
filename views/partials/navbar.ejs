@@ -1,12 +1,22 @@
 <nav>
   <h1>Members Only</h1>
   <ul>
-    <% for (let i = 0; i < links.length; i++) { %>
       <li>
-        <a href="<%= links[i].href %>">
-          <span> <%= links[i].text %> </span>
+        <a href="/">
+          <span></span>
         </a>
+        <a href="/authenticate"></a>
+          <% if (locals.user) {%>
+            <span>Log Out</span>
+          <% } else { %>
+            <span>Log In</span>
+          <%}%>
+        </a>
+      <% if (locals.user) {%>
+        <a href="/sign-up">
+          <span>Sign Up</span>
+        </a>
+      <% } %>
       </li>
-    <% } %>
   </ul>
 </nav>

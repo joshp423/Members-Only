@@ -3,6 +3,10 @@ const app = express();
 const path = require("node:path");
 const indexRouter = require("./routes/indexRouter");
 const assetsPath = path.join(__dirname, "public");
+const session = require("express-session");
+const passport = require("passport");
+const LocalStrategy = require('passport-local').Strategy;
+
 
 app.use(express.static(assetsPath));
 
@@ -35,6 +39,16 @@ async function getPgVersion() {
   }
 }
 getPgVersion();
+
+app.use(session({ secret: "cats", resave: false, saveUninitialized: false }));
+app.use(passport.session());
+app.use(express.urlencoded({ extended: false }));
+
+const bcrypt = require("bcryptjs");
+
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, (error) => {
