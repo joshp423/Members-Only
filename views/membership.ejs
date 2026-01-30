@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Membership Gateway</title>
+</head>
+<body></body>
+  <% if (locals.user) {%>
+    <h1>Enter the password to become a member</h1>
+  <% } else { %>
+    <h1>Sign Up</h1>
+    <%- include("./partials/errors.ejs") %>
+    <form action="/sign-up" method="POST">
+      <label for="username">Email</label>
+      <input id="username" name="username" placeholder="username" type="email" />
+      <label for="password">Password</label>
+      <input id="password" name="password" type="password" />
+      <button type="submit">Sign Up</button>
+    </form>
+  <%}%>
+</body>
+</html>

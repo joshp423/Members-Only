@@ -37,7 +37,6 @@ const passwordAlphaNumericErr = "must contain at least a letter and a number";
 const validateSignUp = [
   body("username")
   .trim()
-  .escape()
   .isEmail().withMessage(`Email: ${emailErr}`)
   .isLength({min: 1, max: 50}).withMessage(`Email: ${emailLengthErr}`),
   body("password")

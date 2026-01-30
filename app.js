@@ -11,9 +11,15 @@ app.use(express.static(assetsPath));
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
-app.use("/", indexRouter);
+app.use(express.urlencoded({ extended: false }));
+app.use(session({ secret: "cats", resave: false, saveUninitialized: false }));
+app.use(passport.session());
+
 
 require("dotenv").config();
+
+app.use("/", indexRouter);
+
 
 const { Pool } = require("pg");
 const { PGHOST, PGDATABASE, PGUSER, PGPASSWORD } = process.env;
@@ -38,9 +44,6 @@ async function getPgVersion() {
 }
 getPgVersion();
 
-app.use(session({ secret: "cats", resave: false, saveUninitialized: false }));
-app.use(passport.session());
-app.use(express.urlencoded({ extended: false }));
 
 
 
