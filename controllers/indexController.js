@@ -1,8 +1,8 @@
 require('dotenv').config();
-const { localsName } = require('ejs');
 const db = require("../db/queries");
 const passport = require("passport");
 const LocalStrategy = require('passport-local').Strategy;
+const bcrypt = require("bcryptjs");
 
 async function allMessagesGet (req, res) {
     const messages = await db.getAllMessages();

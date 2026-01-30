@@ -44,11 +44,7 @@ app.use(session({ secret: "cats", resave: false, saveUninitialized: false }));
 app.use(passport.session());
 app.use(express.urlencoded({ extended: false }));
 
-const bcrypt = require("bcryptjs");
 
-passport.serializeUser((user, done) => {
-  done(null, user.id);
-});
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, (error) => {
