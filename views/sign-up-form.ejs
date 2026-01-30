@@ -11,6 +11,10 @@
     <h1>Sign Up</h1>
     <%- include("./partials/errors.ejs") %>
     <form action="/sign-up" method="POST">
+      <label for="firstName">First Name</label>
+      <input id="firstName" name="firstName" placeholder="First Name" type="text" />
+      <label for="lastName">Last Name</label>
+      <input id="lastName" name="lastName" placeholder="Last Name" type="text" />
       <label for="username">Email</label>
       <input id="username" name="username" placeholder="username" type="email" />
       <label for="password">Password</label>

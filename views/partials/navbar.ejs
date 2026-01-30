@@ -2,21 +2,20 @@
   <h1>Members Only</h1>
   <ul>
       <li>
-        <a href="/">
-          <span></span>
-        </a>
-        <a href="/authenticate"></a>
-          <% if (locals.user) {%>
-            <span>Log Out</span>
-          <% } else { %>
-            <span>Log In</span>
-          <%}%>
-        </a>
       <% if (locals.user) {%>
-        <a href="/sign-up">
-          <span>Sign Up</span>
+        <a href="/log-out">
+          <button>Log Out</button>
         </a>
-      <% } %>
       </li>
+      <% } else { %>
+        <a href="/log-out">
+          <button>Log Out</button>
+        </a>
+      <li>
+        <a href="/sign-up">
+          <button>Sign Up</button>
+        </a>
+      </li>
+      <%}%>
   </ul>
 </nav>

@@ -15,11 +15,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(session({ secret: "cats", resave: false, saveUninitialized: false }));
 app.use(passport.session());
 
-
 require("dotenv").config();
 
 app.use("/", indexRouter);
-
 
 const { Pool } = require("pg");
 const { PGHOST, PGDATABASE, PGUSER, PGPASSWORD } = process.env;
@@ -44,13 +42,10 @@ async function getPgVersion() {
 }
 getPgVersion();
 
-
-
-
 const PORT = process.env.PORT || 3004;
 app.listen(PORT, (error) => {
-    if (error) {
+  if (error) {
     throw error;
-    }
-    console.log(`Members Only - listening on port ${PORT}!`);
+  }
+  console.log(`Members Only - listening on port ${PORT}!`);
 });

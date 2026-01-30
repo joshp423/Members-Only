@@ -5,15 +5,16 @@
   <title>Log In</title>
 </head>
 <body>
+    <%- include('partials/navbar') %>
     <% if (locals.user) {%>
-        <h1>Welcome Back <%= user.username %></h1>
-        <a href="/viewMessages"><button>View Messageboard</button></a>
+        <h1>Welcome Back <%= user.firstname %></h1>
+        <a href="/messageboard"><button>View Messageboard</button></a>
         <a href="/log-out"><button>Log Out</button></a>
     <% } else { %>
         <h1>Please Log In</h1>
         <form action="/log-in" method="POST">
-        <label for="username">Username</label>
-        <input id="username" name="username" placeholder="username" type="text" />
+        <label for="username">Email</label>
+        <input id="username" name="username" placeholder="username" type="email" />
         <label for="password">Password</label>
         <input id="password" name="password" type="password" />
         <button type="submit">Log In</button>
