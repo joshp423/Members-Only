@@ -5,9 +5,19 @@
   <title>Log In</title>
 </head>
 <body>
-    <%- include('partials/navbar')%>
-    <% messages.forEach((message) => { %>
-        <%- include('categoryPages/categoryOptionsNew', {category}); %>
-    <% }); %>
+    <% if (locals.user) {%>
+        <h1>Welcome Back <%= user.username %></h1>
+        <a href="/viewMessages"><button>View Messageboard</button></a>
+        <a href="/log-out"><button>Log Out</button></a>
+    <% } else { %>
+        <h1>Please Log In</h1>
+        <form action="/log-in" method="POST">
+        <label for="username">Username</label>
+        <input id="username" name="username" placeholder="username" type="text" />
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" />
+        <button type="submit">Log In</button>
+        </form>
+    <%}%>
 </body>
 </html>
