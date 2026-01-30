@@ -9,5 +9,6 @@ indexRouter.post("/log-in", indexController.logInPost);
 indexRouter.get("/log-out", indexController.logOutGet);
 indexRouter.get("/messageboard", indexController.allMessagesGet);
 indexRouter.get("/messageboard/new-message", indexController.writeMessageGet);
+indexRouter.post("/messageboard/new-message", indexController.submitMessagePost)
 
 module.exports = indexRouter;

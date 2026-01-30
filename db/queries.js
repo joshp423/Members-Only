@@ -42,10 +42,20 @@ async function userLookupId(userid) {
   return rows[0];
 }
 
+async function submitNewMessage(title, text, userid) {
+    await pool.query(
+        `INSERT INTO messages(title, text, userid)
+            VALUES ($1, $2, $3);`,
+        [title, text, userid]
+    );
+    return;
+}
+
 module.exports = {
   getAllMessages,
   getMessageSenderNames,
   addNewUser,
   userLookupUsername,
   userLookupId,
+  submitNewMessage
 };

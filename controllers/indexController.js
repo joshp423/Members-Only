@@ -138,9 +138,41 @@ async function logOutGet(req, res, next) {
   });
 }
 
-async function writeMessageGet(req, res) {
-  res.render("writeMessageForm");
+async function writeMessageGet (req, res) {
+  console.log(req.user);
+  res.render("messages/writeMessageForm", {user: req.user});
 }
+
+const lengthErrMessage = "must be more than 1 character and less than 250";
+
+const validateMessageText = [
+  body("title")
+  .trim()
+  .escape()
+  .isLength({min: 1, max: 25}).withMessage(`Message Title: ${lengthErrShort}`),
+  body("text")
+  .trim()
+  .escape()
+  .isLength({min: 1, max: 250}).withMessage(`Message Text: ${lengthErrMessage}`)
+]
+
+const submitMessagePost = [
+  ...validateMessageText,
+  async (res, req) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).render("messages/writeMessageForm", {
+        title: "New Message",
+        user: req.user,
+        errors: errors.array(),
+      });
+    }
+    const {title, text} = matchedData(req);
+    await db.submitNewMessage(title, text, req.user.id)
+    res.redirect('/messageboard')
+  }
+] 
+
 
 module.exports = {
   allMessagesGet,
@@ -150,4 +182,5 @@ module.exports = {
   logInPost,
   logOutGet,
   writeMessageGet,
+  submitMessagePost
 };

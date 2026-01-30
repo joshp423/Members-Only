@@ -5,10 +5,14 @@
   <title>New Message</title>
 </head>
 <body>
-    <%- include('partials/navbar')%>
+    <%- include('../partials/navbar')%>
     <h1>New Message</h1>
     <form method="post" action="/messageboard/new-message">
-        
+      <label for="title">Message Title</label>
+      <input id="title" name="title" placeholder="Message Title" type="text" />
+      <label for="text">Message Text</label>
+      <input id="text" name="text" placeholder="Message Text" type="text" />
+      <button type="submit">Submit Message</button>
     </form>
 </body>
 </html>
