@@ -12,12 +12,12 @@ async function allMessagesGet (req, res) {
       messageSenderMap[s.id] = `${s.firstname} ${s.lastname}`;
     });
     messages.forEach((message) => {
-      message.sender = messageSenderMap[message.id]
+      message.sender = messageSenderMap[message.userid]
     })
     if (messages) {
       res.render("index", {title: "Members Only", messages: messages,  user: req.user });
     }
-    res.render("index", {title: "Members Only", messages: "No Messages",  user: req.user });
+    res.render("index", {title: "Members Only",  user: req.user });
 }
 
 async function authenticateGet (req, res) {
@@ -42,9 +42,8 @@ const validateSignUp = [
   .isLength({min: 1, max: 50}).withMessage(`Email: ${emailLengthErr}`),
   body("password")
   .trim()
-  .escape()
   .isLength({min: 1, max: 25}).withMessage(`Password: ${passwordLengthErr}`)
-  .matches("/^(?=.*[A-Za-z])(?=.*\d).+$/gex") //regular expression for contains a letter and a number
+  .matches(/^(?=.*[A-Za-z])(?=.*\d).+$/) //regular expression for contains a letter and a number
   .withMessage(`Password: ${passwordAlphaNumericErr}`)
 ]
 
@@ -99,7 +98,7 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser(async (id, done) => {
   try {
-    const user = db.userLookupId(id);
+    const user = await db.userLookupId(id);
 
     done(null, user);
   } catch(err) {
@@ -107,12 +106,12 @@ passport.deserializeUser(async (id, done) => {
   }
 });
 
-async function logInPost (req, res) {
+const logInPost =
   passport.authenticate("local", {
       successRedirect: "/",
       failureRedirect: "/authenticate"
   })
-}
+
 
 async function logOutGet (req, res, next) {
   req.logout((err) => {

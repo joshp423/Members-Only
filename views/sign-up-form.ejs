@@ -4,11 +4,12 @@
   <meta charset="UTF-8">
   <title>Sign Up</title>
 </head>
-<body>
+<body></body>
   <% if (locals.user) {%>
     <h1>You are already logged in</h1>
   <% } else { %>
     <h1>Sign Up</h1>
+    <%- include("./partials/errors.ejs") %>
     <form action="/sign-up" method="POST">
       <label for="username">Email</label>
       <input id="username" name="username" placeholder="username" type="email" />

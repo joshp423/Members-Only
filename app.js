@@ -5,8 +5,6 @@ const indexRouter = require("./routes/indexRouter");
 const assetsPath = path.join(__dirname, "public");
 const session = require("express-session");
 const passport = require("passport");
-const LocalStrategy = require('passport-local').Strategy;
-
 
 app.use(express.static(assetsPath));
 
@@ -46,7 +44,7 @@ app.use(express.urlencoded({ extended: false }));
 
 
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3004;
 app.listen(PORT, (error) => {
     if (error) {
     throw error;
