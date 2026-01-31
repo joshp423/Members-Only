@@ -5,18 +5,16 @@
   <title>Membership Gateway</title>
 </head>
 <body></body>
-  <% if (locals.user) {%>
+ <% if (locals.user) {%>
     <h1>Enter the password to become a member</h1>
-  <% } else { %>
-    <h1>Sign Up</h1>
-    <%- include("./partials/errors.ejs") %>
-    <form action="/sign-up" method="POST">
-      <label for="username">Email</label>
-      <input id="username" name="username" placeholder="username" type="email" />
-      <label for="password">Password</label>
-      <input id="password" name="password" type="password" />
-      <button type="submit">Sign Up</button>
+    <%- include("partials/errors.ejs") %>
+    <form action="/membership-gateway" method="POST">
+      <label for="password">Membership Password:</label>
+      <input id="password" name="password" type="text" />
+      <button type="submit">Submit</button>
     </form>
-  <%}%>
+<% } else { %>
+  <h1>You are not logged in</h1>
+<%}%>
 </body>
 </html>

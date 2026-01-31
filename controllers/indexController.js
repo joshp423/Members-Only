@@ -14,7 +14,6 @@ async function authenticateGet(req, res) {
   messages.forEach(m => {
     m.timeadded = new Date(m.timeadded).toLocaleString();
   });
-  console.log(req.user)
   res.render("index", { title: "Members Only Messageboard", messages, user: req.user });
 }
 
@@ -163,10 +162,39 @@ const submitMessagePost = [
     }
     const {title, text} = matchedData(req);
     await db.submitNewMessage(title, text, req.user.id)
-    res.redirect('/messageboard')
+    res.redirect('/')
   }
 ] 
 
+async function membershipGatewayGet (req, res) {
+  res.render("membershipGateway", {user: req.user});
+}
+
+async function membershipGatewayPost (req, res) {
+  if (req.body.password === "Membership-Please") {
+    if (req.user.membershipstatus) {
+      return res.status(400).render("membershipGateway", {
+        title: "Membership Gateway",
+        user: req.user,
+        errors: [{msg: "You are already a member!"}]
+      });
+    }
+    await db.makeUserMember(req.user.id);
+    res.redirect("/")
+  }
+  else if (req.body.password === "makemeanadmin") {
+    await db.makeUserAdmin(req.user.id);
+    await db.makeUserMember(req.user.id);
+    res.redirect("/")
+  }
+  else {
+    return res.status(400).render("membershipGateway", {
+      title: "Membership Gateway",
+      user: req.user,
+      errors: [{msg: "Password is incorrect try again!"}]
+    });
+  }
+}
 
 module.exports = {
   allMessagesGet,
@@ -176,5 +204,7 @@ module.exports = {
   logInPost,
   logOutGet,
   writeMessageGet,
-  submitMessagePost
+  submitMessagePost,
+  membershipGatewayGet,
+  membershipGatewayPost
 };

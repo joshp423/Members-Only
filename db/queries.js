@@ -15,8 +15,8 @@ async function getAllMessages() {
 
 async function addNewUser(firstName, lastName, username, password) {
   await pool.query(
-    `INSERT INTO users (firstname, lastname, username, password, membershipstatus)
-        VALUES ($1, $2, $3, $4, false);`,
+    `INSERT INTO users (firstname, lastname, username, password, membershipstatus, adminstatus)
+        VALUES ($1, $2, $3, $4, false, false);`,
     [firstName, lastName, username, password],
   );
   return;
@@ -41,18 +41,37 @@ async function userLookupId(userid) {
 }
 
 async function submitNewMessage(title, text, userid) {
-    await pool.query(
-        `INSERT INTO messages(title, text, userid, timeadded)
-            VALUES ($1, $2, $3, $4);`,
-        [title, text, userid, new Date()]
-    );
-    return;
+  await pool.query(
+    `INSERT INTO messages(title, text, userid, timeadded)
+      VALUES ($1, $2, $3, $4);`,
+    [title, text, userid, new Date()]
+  );
+  return;
 }
 
+async function makeUserMember(userid) {
+  await pool.query(
+    `UPDATE users
+      SET membershipstatus = true
+      WHERE id = $1;`,
+    [userid]
+  )
+}
+
+async function makeUserAdmin(userid) {
+  await pool.query(
+    `UPDATE users
+      SET adminstatus = true
+      WHERE id = $1;`,
+    [userid]
+  )
+}
 module.exports = {
   getAllMessages,
   addNewUser,
   userLookupUsername,
   userLookupId,
-  submitNewMessage
+  submitNewMessage,
+  makeUserMember,
+  makeUserAdmin
 };
