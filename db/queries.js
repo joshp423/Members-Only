@@ -10,7 +10,6 @@ async function getAllMessages() {
     JOIN users ON users.id = messages.userid
     ORDER BY messages.timeadded DESC;`
   );
-  console.log(rows)
   return rows;
 }
 

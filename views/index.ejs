@@ -14,7 +14,8 @@
             <a href="/log-out"><button>Log Out</button></a>
         </div>
     <% } else { %>
-        <h1>Log in to create messages, members can view who sent the messages.</h1>
+        <h1>Log in to create messages</h1>
+        <p>Logged in users who are members can view message sender identities.</p>
         <form action="/log-in" method="POST">
         <label for="username">Email</label>
         <input id="username" name="username" placeholder="username" type="email" />

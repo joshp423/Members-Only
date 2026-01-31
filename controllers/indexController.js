@@ -124,7 +124,11 @@ async function logOutGet(req, res, next) {
     if (err) {
       return next(err);
     }
-    res.redirect("/");
+    req.session.destroy(function(err) {
+      if (err) return next(err);
+      res.clearCookie('connect.sid');
+      res.redirect('/');
+    });
   });
 }
 
