@@ -1,9 +1,10 @@
 <div class="messageTile">
-    <h1> <%= message.text %> </h1>
-    <% if (locals.user) {%>
-        <h3><%= message.firstname %> <%= message.lastname %></h3>
+    <h1>Title: <%= message.title %></h1>
+    <h2>Message: <%= message.text %></h2>
+    <% if (locals.user.membershipstatus) {%>
+        <h3>Sent By: <%= message.firstname %> <%= message.lastname %></h3>
     <% } else { %>
-        <h3>Anonymous User</h3>
-    <% }); %>
-    <p> Sent at: <%= message.added %></p>
+        <h3>Sent By: Anonymous User</h3>
+    <% }; %>
+    <p> Sent at: <%= message.timeadded %></p>
 </div>

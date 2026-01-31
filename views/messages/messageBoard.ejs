@@ -1,18 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Messageboard</title>
-</head>
-<body>
-    <%- include('partials/navbar')%>
+<div>
     <h1>Messageboard</h1>
     <% messages.forEach((message) => { %>
-        <%- include('messages/message', ); %>
+        <%- include('../messages/message', {message, user}); %>
     <% }); %>
-    <div>
-        <a href="/messages/new-message"><button>Write New Message</button></a>
-    </div>
-</body>
-</html>
+    
+</div>
+
 

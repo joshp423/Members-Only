@@ -1,17 +1,16 @@
 const pool = require("./pool");
 
 async function getAllMessages() {
-  const { rows } = pool.query("SELECT * FROM messages");
-  return rows;
-}
-
-async function getMessageSenderNames() {
   const { rows } = await pool.query(
-    `SELECT users.firstname, users.lastname
-            FROM messages
-            JOIN users
-            ON users.id = messages.userid;`,
+    `SELECT 
+      messages.*, 
+      users.firstname, 
+      users.lastname
+    FROM messages
+    JOIN users ON users.id = messages.userid
+    ORDER BY messages.timeadded DESC;`
   );
+  console.log(rows)
   return rows;
 }
 
@@ -44,16 +43,15 @@ async function userLookupId(userid) {
 
 async function submitNewMessage(title, text, userid) {
     await pool.query(
-        `INSERT INTO messages(title, text, userid)
-            VALUES ($1, $2, $3);`,
-        [title, text, userid]
+        `INSERT INTO messages(title, text, userid, timeadded)
+            VALUES ($1, $2, $3, $4);`,
+        [title, text, userid, new Date()]
     );
     return;
 }
 
 module.exports = {
   getAllMessages,
-  getMessageSenderNames,
   addNewUser,
   userLookupUsername,
   userLookupId,

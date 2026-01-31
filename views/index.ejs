@@ -7,11 +7,14 @@
 <body>
     <%- include('partials/navbar') %>
     <% if (locals.user) {%>
-        <h1>Welcome Back <%= user.firstname %></h1>
-        <a href="/messageboard"><button>View Messageboard</button></a>
-        <a href="/log-out"><button>Log Out</button></a>
+        <div class="titleLinks">
+            <h1>Welcome Back <%= user.firstname %></h1>
+            <a href="/new-message"><button>Write New Message</button></a>
+            <a href="/membership-gateway"><button>Membership gateway</button></a>
+            <a href="/log-out"><button>Log Out</button></a>
+        </div>
     <% } else { %>
-        <h1>Please Log In</h1>
+        <h1>Log in to create messages, members can view who sent the messages.</h1>
         <form action="/log-in" method="POST">
         <label for="username">Email</label>
         <input id="username" name="username" placeholder="username" type="email" />
@@ -20,5 +23,6 @@
         <button type="submit">Log In</button>
         </form>
     <%}%>
+    <%- include('messages/messageBoard', {messages, user}) %>
 </body>
 </html>

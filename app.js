@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const app = express();
 const path = require("node:path");
@@ -12,10 +13,18 @@ app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
 app.use(express.urlencoded({ extended: false }));
-app.use(session({ secret: "cats", resave: false, saveUninitialized: false }));
+app.use(session({
+  store: new (require('connect-pg-simple')(session))({
+    conString: process.env.DATABASE_URL
+  }),
+  secret: process.env.FOO_COOKIE_SECRET,
+  resave: false,
+  saveUninitialized: false,
+  cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 } // 30 days
+}));
 app.use(passport.session());
 
-require("dotenv").config();
+
 
 app.use("/", indexRouter);
 

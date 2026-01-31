@@ -5,27 +5,17 @@ const LocalStrategy = require("passport-local").Strategy;
 const bcrypt = require("bcryptjs");
 
 async function allMessagesGet(req, res) {
-  const messages = await db.getAllMessages();
-  const messageSenders = await db.getMessageSenderNames();
-  const messageSenderMap = {};
-  messageSenders.forEach((s) => {
-    messageSenderMap[s.id] = `${s.firstname} ${s.lastname}`;
-  });
-  messages.forEach((message) => {
-    message.sender = messageSenderMap[message.userid];
-  });
-  if (messages) {
-    res.render("index", {
-      title: "Members Only",
-      messages: messages,
-      user: req.user,
-    });
-  }
-  res.render("index", { title: "Members Only", user: req.user });
+  
+  return res.redirect("/");
 }
 
 async function authenticateGet(req, res) {
-  res.render("index", { user: req.user });
+  const messages = await db.getAllMessages();
+  messages.forEach(m => {
+    m.timeadded = new Date(m.timeadded).toLocaleString();
+  });
+  console.log(req.user)
+  res.render("index", { title: "Members Only Messageboard", messages, user: req.user });
 }
 
 async function signUpFormGet(req, res) {
@@ -139,7 +129,7 @@ async function logOutGet(req, res, next) {
 }
 
 async function writeMessageGet (req, res) {
-  console.log(req.user);
+  console.log(req.user.id);
   res.render("messages/writeMessageForm", {user: req.user});
 }
 
@@ -158,7 +148,7 @@ const validateMessageText = [
 
 const submitMessagePost = [
   ...validateMessageText,
-  async (res, req) => {
+  async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).render("messages/writeMessageForm", {
