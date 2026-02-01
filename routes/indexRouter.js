@@ -11,7 +11,6 @@ indexRouter.get("/new-message", indexController.writeMessageGet);
 indexRouter.post("/new-message", indexController.submitMessagePost);
 indexRouter.get("/membership-gateway", indexController.membershipGatewayGet);
 indexRouter.post("/membership-gateway", indexController.membershipGatewayPost);
-indexRouter.get('/delete-message:messageid', indexController.deleteMessage);
-
+indexRouter.get("/delete-message/:messageid", indexController.deleteMessage);
 
 module.exports = indexRouter;

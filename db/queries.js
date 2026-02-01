@@ -8,7 +8,7 @@ async function getAllMessages() {
       users.lastname
     FROM messages
     JOIN users ON users.id = messages.userid
-    ORDER BY messages.timeadded DESC;`
+    ORDER BY messages.timeadded DESC;`,
   );
   return rows;
 }
@@ -44,7 +44,7 @@ async function submitNewMessage(title, text, userid) {
   await pool.query(
     `INSERT INTO messages(title, text, userid, timeadded)
       VALUES ($1, $2, $3, $4);`,
-    [title, text, userid, new Date()]
+    [title, text, userid, new Date()],
   );
   return;
 }
@@ -54,8 +54,8 @@ async function makeUserMember(userid) {
     `UPDATE users
       SET membershipstatus = true
       WHERE id = $1;`,
-    [userid]
-  )
+    [userid],
+  );
 }
 
 async function makeUserAdmin(userid) {
@@ -63,15 +63,19 @@ async function makeUserAdmin(userid) {
     `UPDATE users
       SET adminstatus = true
       WHERE id = $1;`,
-    [userid]
-  )
+    [userid],
+  );
 }
 
-async function deleteMessage (req, res) {
-  console.log(req.params.messageid);
-  await db.deleteMessage(req.params.messageid);
-  return;
+async function deleteMessage(messageid) {
+  await pool.query(
+    `DELETE FROM messages
+            WHERE id = $1;`,
+    [messageid],
+  );
 }
+
+
 
 module.exports = {
   getAllMessages,
@@ -81,5 +85,5 @@ module.exports = {
   submitNewMessage,
   makeUserMember,
   makeUserAdmin,
-  deleteMessage
+  deleteMessage,
 };

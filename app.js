@@ -13,18 +13,18 @@ app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
 app.use(express.urlencoded({ extended: false }));
-app.use(session({
-  store: new (require('connect-pg-simple')(session))({
-    conString: process.env.DATABASE_URL
+app.use(
+  session({
+    store: new (require("connect-pg-simple")(session))({
+      conString: process.env.DATABASE_URL,
+    }),
+    secret: process.env.FOO_COOKIE_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 }, // 30 days
   }),
-  secret: process.env.FOO_COOKIE_SECRET,
-  resave: false,
-  saveUninitialized: false,
-  cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 } // 30 days
-}));
+);
 app.use(passport.session());
-
-
 
 app.use("/", indexRouter);
 
@@ -51,7 +51,7 @@ async function getPgVersion() {
 }
 getPgVersion();
 
-const PORT = process.env.PORT || 3004;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, (error) => {
   if (error) {
     throw error;

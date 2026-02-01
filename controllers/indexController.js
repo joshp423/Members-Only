@@ -5,16 +5,19 @@ const LocalStrategy = require("passport-local").Strategy;
 const bcrypt = require("bcryptjs");
 
 async function allMessagesGet(req, res) {
-  
   return res.redirect("/");
 }
 
 async function authenticateGet(req, res) {
   const messages = await db.getAllMessages();
-  messages.forEach(m => {
+  messages.forEach((m) => {
     m.timeadded = new Date(m.timeadded).toLocaleString();
   });
-  res.render("index", { title: "Members Only Messageboard", messages, user: req.user });
+  res.render("index", {
+    title: "Members Only Messageboard",
+    messages,
+    user: req.user,
+  });
 }
 
 async function signUpFormGet(req, res) {
@@ -123,31 +126,31 @@ async function logOutGet(req, res, next) {
     if (err) {
       return next(err);
     }
-    req.session.destroy(function(err) {
+    req.session.destroy(function (err) {
       if (err) return next(err);
-      res.clearCookie('connect.sid');
-      res.redirect('/');
+      res.clearCookie("connect.sid");
+      res.redirect("/");
     });
   });
 }
 
-async function writeMessageGet (req, res) {
+async function writeMessageGet(req, res) {
   console.log(req.user.id);
-  res.render("messages/writeMessageForm", {user: req.user});
+  res.render("messages/writeMessageForm", { user: req.user });
 }
 
 const lengthErrMessage = "must be more than 1 character and less than 250";
 
 const validateMessageText = [
   body("title")
-  .trim()
-  .escape()
-  .isLength({min: 1, max: 25}).withMessage(`Message Title: ${lengthErrShort}`),
+    .trim()
+    .isLength({ min: 1, max: 25 })
+    .withMessage(`Message Title: ${lengthErrShort}`),
   body("text")
-  .trim()
-  .escape()
-  .isLength({min: 1, max: 250}).withMessage(`Message Text: ${lengthErrMessage}`)
-]
+    .trim()
+    .isLength({ min: 1, max: 250 })
+    .withMessage(`Message Text: ${lengthErrMessage}`),
+];
 
 const submitMessagePost = [
   ...validateMessageText,
@@ -160,48 +163,44 @@ const submitMessagePost = [
         errors: errors.array(),
       });
     }
-    const {title, text} = matchedData(req);
-    await db.submitNewMessage(title, text, req.user.id)
-    res.redirect('/')
-  }
-] 
+    const { title, text } = matchedData(req);
+    await db.submitNewMessage(title, text, req.user.id);
+    res.redirect("/");
+  },
+];
 
-async function membershipGatewayGet (req, res) {
-  res.render("membershipGateway", {user: req.user});
+async function membershipGatewayGet(req, res) {
+  res.render("membershipGateway", { user: req.user });
 }
 
-async function membershipGatewayPost (req, res) {
+async function membershipGatewayPost(req, res) {
   if (req.body.password === "Membership-Please") {
     if (req.user.membershipstatus) {
       return res.status(400).render("membershipGateway", {
         title: "Membership Gateway",
         user: req.user,
-        errors: [{msg: "You are already a member!"}]
+        errors: [{ msg: "You are already a member!" }],
       });
     }
     await db.makeUserMember(req.user.id);
-    res.redirect("/")
-  }
-  else if (req.body.password === "makemeanadmin") {
+    res.redirect("/");
+  } else if (req.body.password === "makemeanadmin") {
     await db.makeUserAdmin(req.user.id);
     await db.makeUserMember(req.user.id);
-    res.redirect("/")
-  }
-  else {
+    res.redirect("/");
+  } else {
     return res.status(400).render("membershipGateway", {
       title: "Membership Gateway",
       user: req.user,
-      errors: [{msg: "Password is incorrect try again!"}]
+      errors: [{ msg: "Password is incorrect try again!" }],
     });
   }
 }
 
-async function deleteMessage(messageid) {
-    await pool.query(
-        `DELETE FROM messages
-            WHERE id = $1;`,
-        [messageid]
-    )
+async function deleteMessage(req, res) {
+  console.log(req.params.messageid);
+  await db.deleteMessage(req.params.messageid);
+  res.redirect("/");
 }
 
 module.exports = {
@@ -215,5 +214,5 @@ module.exports = {
   submitMessagePost,
   membershipGatewayGet,
   membershipGatewayPost,
-  deleteMessage
+  deleteMessage,
 };

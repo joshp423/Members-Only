@@ -4,6 +4,8 @@
     <% if (locals.user) {%>
         <% if (locals.user.membershipstatus) {%>
             <h3>Sent By: <%= message.firstname %> <%= message.lastname %></h3>
+        <% } if (locals.user.adminstatus) { %>
+            <a href="/delete-message/<%= message.id %>"><button>Delete Message</button></a>
         <% } else { %>
             <h3>Sent By: Anonymous User</h3>
         <% }; %>
@@ -11,7 +13,4 @@
         <h3>Sent By: Anonymous User</h3>
     <% }; %>
     <p> Sent at: <%= message.timeadded %></p>
-    <% if (locals.user.adminstatus) {%>
-        <a href="/delete-message/<%= message.id =%>"><button>Delete Message</button></a>
-    <% }; %>
 </div>
