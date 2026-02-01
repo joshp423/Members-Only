@@ -1,24 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Membership Gateway</title>
-  <link rel="stylesheet" href="/styles.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
-</head>
-<body></body>
- <% if (locals.user) {%>
-    <h1>Enter the password to become a member</h1>
-    <%- include("partials/errors.ejs") %>
-    <form action="/membership-gateway" method="POST">
-      <label for="password">Membership Password:</label>
-      <input id="password" name="password" type="text" />
-      <button type="submit">Submit</button>
-    </form>
-<% } else { %>
-  <h1>You are not logged in</h1>
-<%}%>
-</body>
+  <head>
+    <meta charset="UTF-8">
+    <title>Membership Gateway</title>
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
+  </head>
+  <body>
+
+    <div class="membershipGateway">
+    <% if (locals.user) {%>
+        <h1>Enter the password to become a member</h1>
+        <%- include("partials/errors.ejs") %>
+        <form action="/membership-gateway" method="POST">
+          <label for="password">Membership Password:</label>
+          <input id="password" name="password" type="text" />
+          <button type="submit">Submit</button>
+        </form>
+    <% } else { %>
+      <h1>You are not logged in</h1>
+    <%}%>
+    <a href="/">
+        <button>Back to Messageboard</button>
+    </a>
+  </div>
+  </body>
 </html>

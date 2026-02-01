@@ -135,7 +135,6 @@ async function logOutGet(req, res, next) {
 }
 
 async function writeMessageGet(req, res) {
-  console.log(req.user.id);
   res.render("messages/writeMessageForm", { user: req.user });
 }
 
@@ -198,7 +197,6 @@ async function membershipGatewayPost(req, res) {
 }
 
 async function deleteMessage(req, res) {
-  console.log(req.params.messageid);
   await db.deleteMessage(req.params.messageid);
   res.redirect("/");
 }
