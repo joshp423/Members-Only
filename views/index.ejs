@@ -1,8 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Log In</title>
+    <meta charset="UTF-8">
+    <title>Log In</title>
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
 </head>
 <body>
     <%- include('partials/navbar') %>
@@ -14,15 +18,17 @@
             <a href="/log-out"><button>Log Out</button></a>
         </div>
     <% } else { %>
-        <h1>Log in to create messages</h1>
-        <p>Logged in users who are members can view message sender identities.</p>
-        <form action="/log-in" method="POST">
-        <label for="username">Email</label>
-        <input id="username" name="username" placeholder="username" type="email" />
-        <label for="password">Password</label>
-        <input id="password" name="password" type="password" />
-        <button type="submit">Log In</button>
-        </form>
+        <div class="loggedOut">
+            <h1>Log in to create messages</h1>
+            <p>Logged in users who are members can view message sender identities.</p>
+            <form action="/log-in" method="POST">
+            <label for="username">Email</label>
+            <input id="username" name="username" placeholder="username" type="email" />
+            <label for="password">Password</label>
+            <input id="password" name="password" type="password" />
+            <button type="submit">Log In</button>
+            </form>
+        </div>
     <%}%>
     <%- include('messages/messageBoard', {messages, user}) %>
 </body>
