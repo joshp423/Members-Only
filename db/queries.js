@@ -66,6 +66,13 @@ async function makeUserAdmin(userid) {
     [userid]
   )
 }
+
+async function deleteMessage (req, res) {
+  console.log(req.params.messageid);
+  await db.deleteMessage(req.params.messageid);
+  return;
+}
+
 module.exports = {
   getAllMessages,
   addNewUser,
@@ -73,5 +80,6 @@ module.exports = {
   userLookupId,
   submitNewMessage,
   makeUserMember,
-  makeUserAdmin
+  makeUserAdmin,
+  deleteMessage
 };

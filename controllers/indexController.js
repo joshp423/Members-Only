@@ -196,6 +196,14 @@ async function membershipGatewayPost (req, res) {
   }
 }
 
+async function deleteMessage(messageid) {
+    await pool.query(
+        `DELETE FROM messages
+            WHERE id = $1;`,
+        [messageid]
+    )
+}
+
 module.exports = {
   allMessagesGet,
   authenticateGet,
@@ -206,5 +214,6 @@ module.exports = {
   writeMessageGet,
   submitMessagePost,
   membershipGatewayGet,
-  membershipGatewayPost
+  membershipGatewayPost,
+  deleteMessage
 };

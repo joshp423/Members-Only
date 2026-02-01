@@ -11,4 +11,7 @@
         <h3>Sent By: Anonymous User</h3>
     <% }; %>
     <p> Sent at: <%= message.timeadded %></p>
+    <% if (locals.user.adminstatus) {%>
+        <a href="/delete-message/<%= message.id =%>"><button>Delete Message</button></a>
+    <% }; %>
 </div>
